@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Masai Doctor Records</title>
+  </head>
+  <style>
+    h1{
+      text-align: center;
+      text-decoration: underline;
+      color: #2B61A0;
+    }
+    #parent{
+      display: flex;
+      gap: 20px;
+      margin: 20px;
+    }
+    th{
+      background-color: #2B61A0;
+      color: white;
+    }
+    form{
+      width:300px;
+      height: 300px;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      border-radius: 10px;
+      margin-left: 400px;
+    }
+    form >input{
+      display: flex;
+      row-gap: 10px;
+      padding: 5px;
+      margin-top: 10px;
+      width: 80%;
+      margin-bottom: 7px;
+      border-radius: 5px;
+
+    }
+    input{
+      padding:5px;
+      margin-left: 5px;
+    }
+    table{
+      border-collapse: collapse;
+
+    }
+    tr, td{
+      border: 1px solid black;
+      padding: 3px;
+    }
+    tr:nth-child(even){
+      background-color:#8BAACE ;
+    }
+    #submit{
+      width: 250px;
+      padding: 10px;
+      border-radius: 20px;
+      background-color: #2B61A0;
+      color: white;
+      margin-top: 20px;
+      border: none;
+      
+    }
+    #child1{
+      padding:10px;
+      
+    }
+    #specialization{
+      width: 250px;
+      margin-left: 5px;
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 5px;
+    }
+    
+
+  </style>
+  <body>
+    <h1>HOSPITAL - DOCTOR RECORDS</h1>
+    <!-- Use this form for data input  -->
+  <div id="parent">
+    <div id="child1">
+    <form>
+      <input placeholder="Name" type="text" id="name" />
+      <input placeholder="Doctor ID" type="text" id="doctor_id" />
+      <select id="specialization">
+        <option value="">Select Specialization</option>
+        <option value="Dermatologist">Dermatologist</option>
+        <option value="Dentist">Dentist</option>
+        <option value="Gynecologist">Gynecologist</option>
+      </select>
+      <input placeholder="Experience" type="number" id="experience" />
+      <input placeholder="Email" type="email" id="email" />
+      <input placeholder="Mobile No." type="number" id="mobile" />
+      <input id="submit" type="submit" value="Submit" />
+    </form>
+
+    <!-- Use this Select tag for filter part  -->
+    <select id="filter">
+      <option value="">Select Specialization</option>
+      <option value="Dermatologist">Dermatologist</option>
+      <option value="Dentist">Dentist</option>
+      <option value="Gynecologist">Gynecologist</option>
+    </select>
+    </div>
+
+    <div>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Doctor ID</th>
+          <th>Specialization</th>
+          <th>Experience in Years</th>
+          <th>Email</th>
+          <th>Mobile No</th>
+          <th>Role</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Append Rows here using JS & DOM  -->
+      </tbody>
+    </table>
+  </div>
+</div>
+  </body>
+  
+  <script>
+
+        let form = document.querySelector("form");
+        let tableBody = document.querySelector("tbody");
+        let filterSelect = document.getElementById("filter");
+
+
+    document.addEventListener("DOMContentLoaded" , function(){
+      let masaiRecords = [];
+
+    });
+
+    function getRole(experience){
+      if(experience > 5)
+      {
+        return "Senior";
+      }
+      else if(experience >=2 && experience <= 5)
+      {
+        return "Junior";
+      }
+      else{
+        return "Trainee";
+      }
+    }
+
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+    
+
+    let name = document.getElementById("name").value;
+    let doctor_id = document.getElementById("doctor_id").value;
+    let specialization = document.getElementById("specialization").value;
+    let email = document.getElementById("email").value;
+    let mobileNumber = document.getElementById("mobile").value;
+    let experience = document.getElementById("experience").value;
+
+
+    let role = getRole(parseInt(experience));
+
+    let newRow = `<tr>
+      <td>${name}</td>
+      <td>${doctor_id}</td>
+      <td>${specialization}</td>
+      <td>${experience}</td>
+      <td>${email}</td>
+      <td>${mobileNumber}</td>
+      <td>${role}</td>
+      </tr>`;
+
+      tableBody.innerHTML += newRow;
+
+      masaiRecords.push({
+        name,
+        doctor_id,
+        specialization,
+        experience,
+        email,
+        mobileNumber,
+        role,
+      });
+
+      form.reset();
+
+    })
+    
+
+    tableBody.addEventListener("click",function(event){
+      if(event.target.classList.contains("delete")){
+        event.target.closest("tr").remove();
+      }
+    })
+
+
+    filterSelect.addEventListener("change", function(){
+      let selectedspecialization = this.value;
+      let rows = tableBody.querySelectorAll("tr");
+    
+
+    rows.forEach(function(row) {
+      if(selectedspecialization === "All" || row.children[2].textContent === selectedspecialization){
+        row.style.display = "table-row";
+      }
+      else{
+        row.style.display = "none";
+      }
+    });
+  });
+
+
+  function getValue(id){
+   return document.getElementById(id).value;
+  }
+  </script>
+</html>
